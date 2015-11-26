@@ -58,7 +58,8 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            server: '.tmp'
+            server: '.tmp',
+            app:'app'
         },
 
         // Automatically inject Bower components into the scripts
@@ -78,51 +79,71 @@ module.exports = function (grunt) {
         // Run some tasks in parallel to speed up the build process
         concurrent: {
             server: [
-                'copy:styles'
+                'compass:server'
             ],
             test: [
                 'copy:styles'
             ],
             dist: [
-                'copy:styles'
+                'compass:dist',
+                'imagemin',
+               'svgmin'
 
             ]
         },
-
-        // Copies remaining files to places other tasks can use
-        copy: {
+        // Compiles Sass to CSS and generates necessary files if requested
+        compass: {
+            options: {
+                sassDir: '<%= appConfig.path.styles %>',
+                cssDir: '.tmp/styles',
+                generatedImagesDir: '.tmp/images/generated',
+                imagesDir: '<%= appConfig.path.images %>',
+                javascriptsDir: '<%= appConfig.path.scripts %>',
+                fontsDir: '<%= appConfig.path.styles %>/fonts',
+                importPath: './bower_components',
+                httpImagesPath: '/images',
+                httpGeneratedImagesPath: '/images/generated',
+                httpFontsPath: '/styles/fonts',
+                relativeAssets: false,
+                assetCacheBuster: false,
+                raw: 'Sass::Script::Number.precision = 10\n'
+            },
+            dist: {
+                options: {
+                    generatedImagesDir: '<%= appConfig.path.build %>/images/generated'
+                }
+            },
+            server: {
+                options: {
+                    debugInfo: true
+                }
+            }
+        },
+        svgmin: {
             dist: {
                 files: [
                     {
                         expand: true,
-                        dot: true,
-                        cwd: '<%= appConfig.path.client %>',
-                        dest: '<%= appConfig.path.build %>',
-                        src: [
-                            '*.{ico,png,txt}',
-                            '.htaccess',
-                            '*.html',
-
-                            'images/{,*/}*',
-                            'data/*'
-                        ]
-                    },
-                    {
-                        expand: true,
-                        cwd: '.tmp/images',
-                        dest: '<%= appConfig.path.client %>/images',
-                        src: ['generated/*']
+                        cwd: '<%= appConfig.path.images %>',
+                        src: '{,*/}*.svg',
+                        dest: '<%= appConfig.path.build %>/images'
                     }
                 ]
-            },
-            styles: {
-                expand: true,
-                cwd: '<%= appConfig.path.styles %>',
-                dest: '.tmp/styles/',
-                src: '{,*/}*.css'
             }
         },
-        // Add vendor prefixed styles
+        imagemin: {
+            dist: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: '<%= appConfig.path.images %>',
+                        src: '{,*/}*.{png,jpg,jpeg,gif}',
+                        dest: '<%= appConfig.path.build %>/images'
+                    }
+                ]
+            }
+        },
+        //copy html
         autoprefixer: {
             options: {
                 browsers: ['last 1 version']
@@ -141,14 +162,14 @@ module.exports = function (grunt) {
         // The actual grunt server settings
         connect: {
             options: {
-                port: 9002,
+                port: 9000,
                 // Change this to '0.0.0.0' to access the server from outside.
                 hostname: 'localhost',
-                livereload: 35730,
-//                protocol: 'https',
-//                key: grunt.file.read('server.key').toString(),
-//                cert: grunt.file.read('server.crt').toString(),
-//                ca: grunt.file.read('ca.crt').toString(),
+                livereload: 35729,
+                protocol: 'https',
+                key: grunt.file.read('server.key').toString(),
+                cert: grunt.file.read('server.crt').toString(),
+                ca: grunt.file.read('ca.crt').toString(),
                 // Modrewrite rule, connect.static(path) for each path in target's base
                 middleware: function (connect, options) {
                     var optBase = (typeof options.base === 'string') ? [options.base] : options.base,
@@ -226,8 +247,8 @@ module.exports = function (grunt) {
                 tasks: ['newer:jshint:test', 'karma']
             },
             compass: {
-                files: ['<%= appConfig.path.styles %>/{,*/}*.{scss,sass}']
-                //tasks: ['compass:server', 'autoprefixer']
+                files: ['<%= appConfig.path.styles %>/{,*/}*.{scss,sass}'],
+                tasks: ['compass:server', 'autoprefixer']
             },
             gruntfile: {
                 files: ['Gruntfile.js']
@@ -336,6 +357,12 @@ module.exports = function (grunt) {
                 cwd: '<%= appConfig.path.styles %>',
                 dest: '.tmp/styles/',
                 src: '{,*/}*.css'
+            },
+            html:{
+                expand: true,
+                cwd: '<%= appConfig.path.app %>',
+                dest: 'app',
+                src: '{,*/}*.html'
             }
         },
 
@@ -415,16 +442,18 @@ module.exports = function (grunt) {
         'autoprefixer',
         'concat',
         'concat:dist',
+        'copy:html',
         'ngtemplates',
         'ngmin',
         'copy:dist',
         'cdnify',
         'cssmin',
         'uglify',
-       'filerev',
-       'usemin'
-
-        //'htmlmin'
+        'filerev',
+        'usemin',
+        'htmlmin',
+        'clean:app',
+        'clean:server'
     ]);
     grunt.registerTask('default', [
         'newer:jshint',

@@ -1,9 +1,11 @@
 {
-    "html": "app/{,*/}*.html",
+    "html": "app/**/*.html",
     "build":"build",
     "client":"client",
     "styles":"client/styles",
     "scripts":"client/app",
     "images":"client/images",
-    "app":"client/app"
+    "app":"client/app",
+    "appviews":"client/app/**/.html",
+    "config":"client/config"
 }

@@ -1,0 +1,11 @@
+{
+    "idsrvurl": "https://www.attinad.com:444/idsrv/issue/",
+    "clientid": "mmclientprod",
+    "profileuri": "https://api.carrotmeetingmanager.com/api/user",
+    "returnuri": "https://carrotmeetingmanager.com/meetings",
+    "scope": "urn:meetingmanagerservice",
+    "authorizepath": "oauth2/authorize",
+    "servicebase": "https://api.carrotmeetingmanager.com/api/",
+    "signalrbase":"https://api.carrotmeetingmanager.com/",
+    "sitebase":"/"
+}

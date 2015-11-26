@@ -19,7 +19,7 @@ module.exports = function (grunt) {
                 separator: ';'
             },
             dist: {
-                src: ['<%= appConfig.path.scripts%>/{,*/}*.js'],
+                src: ['<%= appConfig.path.scripts%>/{,**/}*.js'],
                 dest: '.tmp/concat/scripts/scripts.js'
             }
         },
@@ -28,12 +28,12 @@ module.exports = function (grunt) {
                 options: {
                     prefix: '/'
                 },
-                src: '<%= appConfig.path.html%>',
+                src: ['<%= appConfig.path.html%>'],
                 dest: '.tmp/concat/scripts/templates.js',
                 options: {
                     htmlmin: { collapseWhitespace: true, collapseBooleanAttributes: true },
                     bootstrap:  function(module, script) {
-                        return "angular.module('app.core').run(['$templateCache', function($templateCache) {" + script + "}])";
+                        return "angular.module('app.global').run(['$templateCache', function($templateCache) {" + script + "}])";
                     }
                 }
             }
@@ -207,6 +207,7 @@ module.exports = function (grunt) {
                         '.tmp',
                         'rewrite|/bower_components|./bower_components',
                         'rewrite|/client/styles|./client/styles', // for sourcemaps
+                        'rewrite|/client/app|./client/app',
                         '<%= appConfig.path.client %>'
                     ]
                 }
@@ -298,7 +299,51 @@ module.exports = function (grunt) {
                 ]
             }
         },
-
+        replace: {
+            development: {
+                options: {
+                    patterns: [
+                        {
+                            json: grunt.file.readJSON('./client/config/environments/development.json')
+                        }
+                    ]
+                },
+                files: [
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['./client/config/configuration.constant.js'],
+                        dest: '<%= appConfig.path.scripts %>/global/'
+                    }
+                ]
+            },
+            staging: {
+                options: {
+                    patterns: [{
+                        json: grunt.file.readJSON('./client/config/environments/staging.json')
+                    }]
+                },
+                files: [{
+                    expand: true,
+                    flatten: true,
+                    src: ['./client/config/configuration.constant.js'],
+                    dest: '<%= appConfig.path.scripts %>/global/'
+                }]
+            },
+            production: {
+                options: {
+                    patterns: [{
+                        json: grunt.file.readJSON('./client/config/environments/production.json')
+                    }]
+                },
+                files: [{
+                    expand: true,
+                    flatten: true,
+                    src: ['./client/config/configuration.constant.js'],
+                    dest: '<%= appConfig.path.scripts %>/global/'
+                }]
+            }
+        },
         // Copies remaining files to places other tasks can use
         copy: {
             dist: {
@@ -362,7 +407,7 @@ module.exports = function (grunt) {
                 expand: true,
                 cwd: '<%= appConfig.path.app %>',
                 dest: 'app',
-                src: '{,*/}*.html'
+                src: '{,**/}/*.html'
             }
         },
 
@@ -426,7 +471,7 @@ module.exports = function (grunt) {
         grunt.task.run([
             'clean:server',
             'wiredep',
-           // 'replace:development',
+            'replace:development',
             'concurrent:server',
             'autoprefixer',
             'connect:livereload',
@@ -434,7 +479,7 @@ module.exports = function (grunt) {
         ]);
     });
     grunt.registerTask('build', [
-        //'replace:development',
+        'replace:development',
         'clean:dist',
         'wiredep',
         'useminPrepare',
@@ -455,6 +500,53 @@ module.exports = function (grunt) {
         'clean:app',
         'clean:server'
     ]);
+    grunt.registerTask('buildstaging', [
+        'replace:staging',
+        'clean:dist',
+        'wiredep',
+        'useminPrepare',
+        'concurrent:dist',
+        'autoprefixer',
+        'concat',
+        'concat:dist',
+        'copy:html',
+        'ngtemplates',
+        'ngmin',
+        'copy:dist',
+        'cdnify',
+        'cssmin',
+        'uglify',
+        'filerev',
+        'usemin',
+        'htmlmin',
+        'clean:app',
+        'clean:server'
+        //'msdeploy'
+    ]);
+    grunt.registerTask('buildproduction', [
+        'replace:production',
+        'clean:dist',
+        'wiredep',
+        'useminPrepare',
+        'concurrent:dist',
+        'autoprefixer',
+        'concat',
+        'concat:dist',
+        'copy:html',
+        'ngtemplates',
+        'ngmin',
+        'copy:dist',
+        'cdnify',
+        'cssmin',
+        'uglify',
+        'filerev',
+        'usemin',
+        'htmlmin',
+        'clean:app',
+        'clean:server'
+        //'deployment task'
+    ]);
+
     grunt.registerTask('default', [
         'newer:jshint',
         'test',

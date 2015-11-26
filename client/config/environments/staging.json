@@ -1,0 +1,11 @@
+{
+    "idsrvurl": "https://www.attinad.com:444/idsrv/issue/",
+    "clientid": "mmclientuat",
+    "profileuri": "https://www.attinad.com:444/meetingmanager/api/user",
+    "returnuri": "https://attinad.com:442/meetings",
+    "scope": "urn:meetingmanagerservice",
+    "authorizepath": "oauth2/authorize",
+    "servicebase": "https://www.attinad.com:444/meetingmanager/api/",
+    "signalrbase":"https://www.attinad.com:444/meetingmanager/",
+    "sitebase":"/"
+}

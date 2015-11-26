@@ -1,0 +1,9 @@
+{
+    "html": "client/app/{,*/}*.html",
+    "build":"build",
+    "client":"client",
+    "styles":"client/styles",
+    "scripts":"client/app",
+    "images":"client/images",
+    "app":"client/app"
+}

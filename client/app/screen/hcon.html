@@ -1,0 +1,12 @@
+<ul class="parentNode">
+<li>{{hcon.GeneralProperties.UId}}</li>
+<ul class="child">
+<li ng-repeat="hcon in hcon.HContainers">{{hcon.GeneralProperties.UId}}
+    <ul class="child">
+        <li ng-repeat="hcon in hcon.HContainers">{{hcon.GeneralProperties.UId}}</li>
+        <li ng-repeat="hcon in hcon.HContainers">{{hcon.GeneralProperties.UId}}</li>
+    </ul>
+</li>
+
+</ul>
+</ul>

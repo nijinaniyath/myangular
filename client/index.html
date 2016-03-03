@@ -1,0 +1,73 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angularjs-toaster/toaster.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+    <link rel="stylesheet" href="styles/tree.css">
+</head>
+<body ng-app="demoApp" ng-cloak>
+<toaster-container toaster-options="{'time-out': 5000,'position-class': 'toast-bottom-right'}"></toaster-container>
+<a ui-sref="home">Home</a>
+<div ui-view="">
+
+</div>
+<footer class="footer">
+    <small>© 2015 <a href="#">demo application</a> </small>
+</footer>
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-XXXXX-X');
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angularjs-toaster/toaster.js"></script>
+<script src="bower_components/ng-storage/ngStorage.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-mocks/angular-mocks.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="app/app.js"></script>
+<script src="app/global/global.module.js"></script>
+<script src="app/global/configuration.constant.js"></script>
+<script src="app/resize/resize.module.js"></script>
+<script src="app/resize/resize.controller.js"></script>
+<script src="app/resize/resize.directive.js"></script>
+<script src="app/resize/resize.service.js"></script>
+<script src="app/screen/screen.directive.js"></script>
+<script src="app/screen/container.directive.js"></script>
+
+<!-- endbuild -->
+<!-- only for build purpose. -->
+<!-- build:js scripts/templates.js -->
+<script src="app/templates.js "></script>
+<!-- endbuild -->
+</body>
+</html>

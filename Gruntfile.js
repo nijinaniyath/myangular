@@ -19,8 +19,18 @@ module.exports = function (grunt) {
                 separator: ';'
             },
             dist: {
-                src: ['<%= appConfig.path.scripts%>/{,**/}*.js'],
+                src: ['<%= appConfig.path.scripts%>/{,**/}*.module.js','<%= appConfig.path.scripts%>/{,**/}*.js'],
                 dest: '.tmp/concat/scripts/scripts.js'
+            }
+        },
+        karma: {
+            options: {
+                // point all tasks to karma config file
+                configFile: 'test/karma.conf.js'
+            },
+            unit: {
+                // run tests once instead of continuously
+                singleRun: false
             }
         },
         ngtemplates: {
@@ -87,9 +97,19 @@ module.exports = function (grunt) {
             dist: [
                 'compass:dist',
                 'imagemin',
-               'svgmin'
+                'svgmin'
 
             ]
+        },
+        ngAnnotate: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '.tmp/concat/scripts',
+                    src: '*.js',
+                    dest: '.tmp/concat/scripts'
+                }]
+            }
         },
         // Compiles Sass to CSS and generates necessary files if requested
         compass: {
@@ -162,10 +182,10 @@ module.exports = function (grunt) {
         // The actual grunt server settings
         connect: {
             options: {
-                port: 9000,
+                port: 9001,
                 // Change this to '0.0.0.0' to access the server from outside.
                 hostname: 'localhost',
-                livereload: 35729,
+                livereload: 35730,
                 protocol: 'https',
                 key: grunt.file.read('server.key').toString(),
                 cert: grunt.file.read('server.crt').toString(),
@@ -462,6 +482,13 @@ module.exports = function (grunt) {
             }
         }
 })
+    grunt.registerTask('test', [
+        'clean:server',
+        'concurrent:test',
+        'autoprefixer',
+        'connect:test',
+        'karma'
+    ]);
 
     grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
         if (target === 'build') {
@@ -489,7 +516,7 @@ module.exports = function (grunt) {
         'concat:dist',
         'copy:html',
         'ngtemplates',
-        'ngmin',
+        'ngAnnotate',
         'copy:dist',
         'cdnify',
         'cssmin',
@@ -497,8 +524,8 @@ module.exports = function (grunt) {
         'filerev',
         'usemin',
         'htmlmin',
-        'clean:app',
-        'clean:server'
+       'clean:app',
+       'clean:server'
     ]);
     grunt.registerTask('buildstaging', [
         'replace:staging',

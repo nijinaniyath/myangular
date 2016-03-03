@@ -1,0 +1,29 @@
+{
+  "name": "demo-app",
+  "version": "0.0.0",
+  "authors": [
+    "nijin <nijinaniyath@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.7",
+    "bootstrap-sass": "~3.3.6",
+    "angular-ui-router": "~0.2.15",
+    "angularjs-toaster": "~0.4.16",
+    "ng-storage": "~0.4.2",
+    "ng-resource": "~0.0.2",
+    "angular-resource": "~1.4.9",
+    "angular-mocks": "~1.5.0"
+  },
+  "resolutions": {
+    "angular": "1.4.8"
+  }
+}

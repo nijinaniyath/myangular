@@ -1,11 +1,11 @@
 {
-    "idsrvurl": "https://www.attinad.com:444/idsrv/issue/",
-    "clientid": "mmclientimplicit",
-    "profileuri": "https://www.attinad.com:444/meetingmanager/api/user",
-    "returnuri": "https://localhost:9000/",
-    "scope": "urn:meetingmanagerservice",
-    "authorizepath": "oauth2/authorize",
-    "servicebase": "https://www.attinad.com:444/meetingmanager/api/",
-    "signalrbase":"https://www.attinad.com:444/meetingmanager/",
+    "idsrvurl": "abc",
+    "clientid": "abv",
+    "profileuri": "",
+    "returnuri": "/",
+    "scope": "",
+    "authorizepath": "",
+    "servicebase": "",
+    "signalrbase":"/",
     "sitebase":"/"
 }
